@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
 }
-
 android {
     namespace = "com.e2g16.quizapp"
     compileSdk = 34

@@ -55,6 +55,7 @@ class HistoryFragment : Fragment() {
                     Log.e("HistoryFragment", "Error fetching data: ${error.message}")
                 }
 
+
             })
 
     }
