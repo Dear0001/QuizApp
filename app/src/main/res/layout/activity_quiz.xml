@@ -61,11 +61,11 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="32dp"
+        android:contentDescription="@string/quiz_image"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:srcCompat="@drawable/historyimg"
-        android:contentDescription="@string/quiz_image" />
+        app:srcCompat="@drawable/historyimg" />
 
     <TextView
         android:id="@+id/textView21"
@@ -235,6 +235,17 @@
             android:text="Sorry you have lost"
             android:textSize="28dp" />
     </LinearLayout>
+    <!-- Next Question button -->
+    <Button
+        android:id="@+id/nextQuestionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="264dp"
+        android:text="Next Question"
+        app:layout_constraintEnd_toEndOf="@+id/sorry"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView23"
+        app:layout_constraintTop_toBottomOf="@+id/sorry" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

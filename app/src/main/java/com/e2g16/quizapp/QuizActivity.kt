@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import com.e2g16.quizapp.databinding.ActivityQuizBinding
 import com.e2g16.quizapp.model.Question
@@ -28,7 +29,6 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var questionList: ArrayList<Question>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -45,7 +45,6 @@ class QuizActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("TAG", "onCancelled: ${error.message}")
                 }
-
             })
 
         Firebase.database.reference.child("PlayerCoin")
@@ -61,7 +60,6 @@ class QuizActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {
                     TODO()
                 }
-
             })
 
         questionList = ArrayList()
@@ -81,6 +79,9 @@ class QuizActivity : AppCompatActivity() {
                     var question: Question? = data.toObject(Question::class.java)
                     questionList.add(question!!)
                 }
+
+                // Shuffle the question list
+                questionList.shuffle()
 
                 if (questionList.size > 0) {
                     binding.question.text = questionList[currentQuestion].question
@@ -116,10 +117,30 @@ class QuizActivity : AppCompatActivity() {
         binding.option4.setOnClickListener {
             nextQuestionAndScoreUpdate(binding.option4.text.toString())
         }
+
+        // Find the button and set an OnClickListener
+        val nextQuestionButton = findViewById<Button>(R.id.nextQuestionButton)
+        nextQuestionButton.setOnClickListener {
+            nextQuestion()
+        }
+    }
+
+    // Function for moving to the next question
+    private fun nextQuestion() {
+        currentQuestion++
+
+        if (currentQuestion < questionList.size) {
+            binding.question.text = questionList[currentQuestion].question
+            binding.option1.text = questionList[currentQuestion].option1
+            binding.option2.text = questionList[currentQuestion].option2
+            binding.option3.text = questionList[currentQuestion].option3
+            binding.option4.text = questionList[currentQuestion].option4
+        } else {
+            Toast.makeText(this, "You have reached the end of the quiz", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun nextQuestionAndScoreUpdate(str: String) {
-
         if (str.equals(questionList[currentQuestion].ans)) {
             score += 10
             Toast.makeText(this, score.toString(), Toast.LENGTH_SHORT).show()
@@ -131,17 +152,14 @@ class QuizActivity : AppCompatActivity() {
 
         if (currentQuestion >= questionList.size) {
             if (score >= passScore) {
-
                 binding.winner.visibility = View.VISIBLE
                 Firebase.database.reference.child("PlayChance")
                     .child(Firebase.auth.currentUser!!.uid).setValue(currentChance + 1)
-
             } else {
                 binding.sorry.visibility = View.VISIBLE
             }
 
             Toast.makeText(this, "You have reached the end of the quiz", Toast.LENGTH_SHORT).show()
-
         } else {
             binding.question.text = questionList[currentQuestion].question
             binding.option1.text = questionList[currentQuestion].option1
@@ -150,5 +168,4 @@ class QuizActivity : AppCompatActivity() {
             binding.option4.text = questionList[currentQuestion].option4
         }
     }
-
 }
